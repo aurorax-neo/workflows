@@ -19,17 +19,17 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Set Release Name
+        shell: bash
+        id: set_release_name
+        run: echo "tag=$(echo $GITHUB_REF | sed 's|refs/tags/||')" >> $GITHUB_OUTPUT
+
       - name: Generate Changelog
         id: changelog
         run: |
           npm install -g conventional-changelog-cli
           conventional-changelog -p angular -i CHANGELOG.md -s -r 0
           cp CHANGELOG.md ./tmp_changelog
-
-      - name: Set Release Name
-        shell: bash
-        id: set_release_name
-        run: echo "tag=$(echo $GITHUB_REF | sed 's|refs/tags/||')" >> $GITHUB_OUTPUT
 
       - name: Create Release
         id: create_release
